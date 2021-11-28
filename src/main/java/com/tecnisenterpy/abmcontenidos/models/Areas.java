@@ -93,6 +93,11 @@ public class Areas {
         this.fechaModificacion = LocalDateTime.now();
     }
 
+    public void copyDataFromArea(Areas source){
+        this.nombreArea = source.getNombreArea();
+        this.descripcionArea = source.getDescripcionArea();
+    }
+
     @Override
     public String toString() {
         return "Areas{" +

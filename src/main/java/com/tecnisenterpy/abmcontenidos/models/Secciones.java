@@ -94,6 +94,11 @@ public class Secciones {
         this.fechaModificacion = LocalDateTime.now();
     }
 
+    public void copyDataFromSeccion(Secciones source){
+        this.nombreSeccion = source.getNombreSeccion();
+        this.descripcionSeccion = source.getDescripcionSeccion();
+    }
+
     @Override
     public String toString() {
         return "Secciones{" +
