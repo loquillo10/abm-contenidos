@@ -17,7 +17,7 @@ public class InternosController {
     private InternoRepository service;
 
     @GetMapping("/listainternos")
-    public List<Internos> listaInternos(){
+    public List<Internos> listaInternos() {
         return (List<Internos>) service.findAll();
     }
 
@@ -26,16 +26,16 @@ public class InternosController {
         //es un optional
         Optional<Internos> I = service.findById(id);
         //si esta presente se devuelve
-        if(I.isPresent()){
+        if (I.isPresent()) {
             return ResponseEntity.ok(I.get());
         }//sino , lanzamos una excepcion
-        else{
+        else {
             throw new ClassNotFoundException("Not found Internos by Id " + id);
         }
     }
 
     @PostMapping("/listainternos")
-    public Internos agregarInternos(@RequestBody Internos I){
+    public Internos agregarInternos(@RequestBody Internos I) {
         return service.save(I);
     }
 
@@ -44,20 +44,33 @@ public class InternosController {
         //buscar un interno, para actualizar y lo traemos
         Optional<Internos> GetInterno = service.findById(id);
         //si lo encontramos, lo traemos
-        if (GetInterno.isPresent()){
+        if (GetInterno.isPresent()) {
             //Interno encontrado para actualizar
             Internos internoToUpdate = GetInterno.get();
             //obtenemos los nuevos datos..
             internoToUpdate.copyDataFromInterno(internoUpdate);
             //Guardar en BD
             Internos internosSave = service.save(internoToUpdate);
-            return  ResponseEntity.ok(internosSave);
-        }else
-        {
+            return ResponseEntity.ok(internosSave);
+        } else {
             throw new ClassNotFoundException("Not Found Internos By Id " + id);
         }
     }
 
-
+    @DeleteMapping("/listainternos/{id}")
+    public ResponseEntity<Boolean> eliminarInterno(@PathVariable int id) throws ClassNotFoundException {
+        //buscar un interno, para eliminar
+        Optional<Internos> GetInterno = service.findById(id);
+        //si lo encontramos, lo traemos
+        if (GetInterno.isPresent()) {
+            //Interno encontrado para eliminar
+            Internos internoToDelete = GetInterno.get();
+            //eliminamos
+            service.delete(internoToDelete);
+            return ResponseEntity.ok(true);
+        } else {
+            throw new ClassNotFoundException("Not Found Internos By Id " + id);
+        }
+    }
 
 }
