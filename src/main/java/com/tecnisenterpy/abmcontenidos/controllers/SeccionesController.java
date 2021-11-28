@@ -58,6 +58,7 @@ public class SeccionesController {
         }
     }
 
+    @DeleteMapping("/secciones/{id}")
     public ResponseEntity<Boolean> eliminarSeccion(@PathVariable Integer id){
         //buscamos la seccion para eliminar
         Optional<Secciones> findSeccion = service.findById(id);
