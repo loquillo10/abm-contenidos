@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,7 @@ public class SeccionesController {
     }
 
 
+    @PutMapping("/secciones/{id}")
     public ResponseEntity<Secciones> actualizarSeccion(@PathVariable Integer id, @RequestBody Secciones seccionUpdate){
         //traemos la seccion con un optional
         Optional<Secciones> seccionesUpdate = service.findById(id);
@@ -51,6 +53,18 @@ public class SeccionesController {
             seccionData.copyDataFromSeccion(seccionUpdate);
             return ResponseEntity.ok(seccionData);
         }else {
+            //si tenemos un error lo trabajamos
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    public ResponseEntity<Boolean> eliminarSeccion(@PathVariable Integer id){
+        //buscamos la seccion para eliminar
+        Optional<Secciones> findSeccion = service.findById(id);
+        if (findSeccion.isPresent()){
+            service.delete(findSeccion.get());
+            return ResponseEntity.ok(true);
+        }else{
             //si tenemos un error lo trabajamos
             return ResponseEntity.notFound().build();
         }
